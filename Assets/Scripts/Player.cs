@@ -1,11 +1,16 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Player : MonoBehaviour {
 
+    public bool canTripleShot = false;
+
     [SerializeField]
     private GameObject _laserPrefab;
+    [SerializeField]
+    private GameObject _tripleShot;
 
     [SerializeField]
     private float _speed = 5.0f;
@@ -34,8 +39,15 @@ public class Player : MonoBehaviour {
     // to it. Between each fire, add half a second to nextFire and wait for Time.time to catch up.
     private void Shoot()
     {
-        _nextFire = Time.time + _fireRate;
-        Instantiate(_laserPrefab, transform.position + new Vector3(0.0f, 0.90f, 0.0f), Quaternion.identity);
+        if(canTripleShot)
+        {
+            _nextFire = Time.time + _fireRate;
+            Instantiate(_tripleShot, transform.position, Quaternion.identity);
+        } else
+        {
+            _nextFire = Time.time + _fireRate;
+            Instantiate(_laserPrefab, transform.position + new Vector3(0.0f, 0.90f, 0.0f), Quaternion.identity);
+        }
     }
 
     private void Movement()
@@ -68,5 +80,21 @@ public class Player : MonoBehaviour {
         {
             transform.position = new Vector3(9.4f, transform.position.y, 0);
         }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.tag == "TripleShotPowerUp")
+        {
+            canTripleShot = true;
+            StartCoroutine(TripleShotPowerDownRoutine());
+        }
+        Destroy(collision.gameObject);
+    }
+
+    private IEnumerator TripleShotPowerDownRoutine()
+    {
+        yield return new WaitForSeconds(5.0f);
+        canTripleShot = false;
     }
 }
