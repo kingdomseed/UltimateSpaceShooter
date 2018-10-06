@@ -12,8 +12,11 @@ public class EnemyAI : MonoBehaviour {
     private float _fireRate = 0.5f;
     private float _nextFire = 0.0f;
 
-	// Update is called once per frame
-	void Update () {
+    [SerializeField]
+    private GameObject _enemyExplosionPrefab;
+
+    // Update is called once per frame
+    void Update () {
         Movement();
         if(Time.time > _nextFire)
         {
@@ -30,6 +33,15 @@ public class EnemyAI : MonoBehaviour {
     private void Movement()
     {
         transform.Translate(Vector3.down * Time.deltaTime * _speed);
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.GetComponent<Laser>() || collision.GetComponent<Player>())
+        {
+            Instantiate(_enemyExplosionPrefab, transform.position, Quaternion.identity);
+            Destroy(gameObject);
+        }
     }
 
     private void OnBecameInvisible()

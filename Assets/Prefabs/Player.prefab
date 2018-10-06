@@ -99,6 +99,8 @@ MonoBehaviour:
   _speedBoost: 2
   _fireRate: 0.5
   _playerHealth: 5
+  _playerExplosionPrefab: {fileID: 1659492252722016, guid: b1ca1a167ab39724d9650bb1f4ddd96f,
+    type: 2}
 --- !u!212 &212136222718464470
 SpriteRenderer:
   m_ObjectHideFlags: 1

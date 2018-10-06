@@ -24,6 +24,8 @@ public class Player : MonoBehaviour {
 
     [SerializeField]
     private int _playerHealth = 5;
+    [SerializeField]
+    private GameObject _playerExplosionPrefab;
 
     private void Start () {
         
@@ -122,13 +124,12 @@ public class Player : MonoBehaviour {
             {
                 PlayerIsDestroyed();
             }
-            Destroy(collision.gameObject);
-
         }
     }
 
     private void PlayerIsDestroyed()
     {
+        Instantiate(_playerExplosionPrefab, transform.position, Quaternion.identity);
         Destroy(gameObject);
     }
 

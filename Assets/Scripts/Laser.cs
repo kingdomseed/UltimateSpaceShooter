@@ -23,7 +23,6 @@ public class Laser : MonoBehaviour {
         // destroy enemy ship and this object
         if (collision.GetComponent<EnemyAI>())
         {
-            Destroy(collision.gameObject);
             Destroy(gameObject);
         }
 
