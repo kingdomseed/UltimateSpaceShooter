@@ -620,7 +620,7 @@ PlayerSettings:
   apiCompatibilityLevel: 2
   cloudProjectId: c25d3a69-41d7-4068-91a3-8cbf56ccb1ce
   projectName: UltimateSpaceShooter
-  organizationId: cs3-capstone
+  organizationId: holtnet-projects
   cloudEnabled: 0
   enableNativePlatformBackendsForNewInputSystem: 0
   disableOldInputManagerSupport: 0

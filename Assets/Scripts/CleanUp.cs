@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Laser : MonoBehaviour {
+public class CleanUp : MonoBehaviour {
 
     [SerializeField]
     private float _speed = 10.0f;
@@ -16,16 +16,5 @@ public class Laser : MonoBehaviour {
     private void OnBecameInvisible()
     {
         Destroy(gameObject);
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        // destroy enemy ship and this object
-        if (collision.GetComponent<EnemyAI>())
-        {
-            Destroy(collision.gameObject);
-            Destroy(gameObject);
-        }
-
     }
 }

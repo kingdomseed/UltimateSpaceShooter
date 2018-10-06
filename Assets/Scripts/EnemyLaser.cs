@@ -2,16 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Laser : MonoBehaviour {
+public class EnemyLaser : MonoBehaviour {
 
     [SerializeField]
     private float _speed = 10.0f;
 
-    void Update()
-    {
+	void Update () {
         // move up at 10 speed
-        transform.Translate(Vector3.up * _speed * Time.deltaTime);
-    }
+        transform.Translate(Vector3.down * _speed * Time.deltaTime);
+	}
 
     private void OnBecameInvisible()
     {
@@ -21,11 +20,10 @@ public class Laser : MonoBehaviour {
     private void OnTriggerEnter2D(Collider2D collision)
     {
         // destroy enemy ship and this object
-        if (collision.GetComponent<EnemyAI>())
+        if(collision.GetComponent<Player>())
         {
-            Destroy(collision.gameObject);
             Destroy(gameObject);
         }
-
+        
     }
 }
