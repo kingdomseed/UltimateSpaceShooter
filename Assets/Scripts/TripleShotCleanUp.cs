@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CleanUp : MonoBehaviour {
+public class TripleShotCleanUp : MonoBehaviour {
 
     [SerializeField]
     private float _speed = 10.0f;

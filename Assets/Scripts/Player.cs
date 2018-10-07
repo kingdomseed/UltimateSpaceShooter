@@ -1,17 +1,27 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class Player : MonoBehaviour {
-
-    [SerializeField]
-    private bool canTripleShot = false;
-    [SerializeField]
-    private bool canSpeedBoost = false;
+public class Player : MonoBehaviour
+{
 
     [SerializeField]
     private GameObject _laserPrefab;
     [SerializeField]
     private GameObject _tripleShot;
+    [SerializeField]
+    private GameObject _shieldsGameObject;
+    [SerializeField]
+    private GameObject _playerExplosionPrefab;
+
+    private UIManager _uiManager;
+    private GameManager _gameManager;
+
+    [SerializeField]
+    private bool _canTripleShot = false;
+    [SerializeField]
+    private bool _canSpeedBoost = false;
+    [SerializeField]
+    private bool _isShielded = false;
 
     [SerializeField]
     private float _speed = 5.0f;
@@ -20,20 +30,27 @@ public class Player : MonoBehaviour {
 
     [SerializeField]
     private float _fireRate = 0.5f;
+
+    // Modified by Time.time
     private float _nextFire = 0.0f;
 
     [SerializeField]
-    private int _playerHealth = 5;
-    [SerializeField]
-    private GameObject _playerExplosionPrefab;
+    private int _playerLives = 3;
 
-    private void Start () {
-        
-        // Set starting position of player
-        transform.position = new Vector3(0, 0, 0);
-	}
-	
-	private void Update () {
+    private void Awake()
+    {
+        if(FindObjectOfType<GameManager>())
+        {
+            _gameManager = FindObjectOfType<GameManager>();
+        }
+        if(FindObjectOfType<UIManager>())
+        {
+            _uiManager = FindObjectOfType<UIManager>();
+        }
+    }
+
+    private void Update()
+    {
         Movement();
         if (Input.GetButtonDown("Fire1") && Time.time > _nextFire)
         {
@@ -46,11 +63,12 @@ public class Player : MonoBehaviour {
     // to it. Between each fire, add half a second to nextFire and wait for Time.time to catch up.
     private void Shoot()
     {
-        if(canTripleShot)
+        if (_canTripleShot)
         {
             _nextFire = Time.time + _fireRate;
             Instantiate(_tripleShot, transform.position, Quaternion.identity);
-        } else
+        }
+        else
         {
             _nextFire = Time.time + _fireRate;
             Instantiate(_laserPrefab, transform.position + new Vector3(0.0f, 0.90f, 0.0f), Quaternion.identity);
@@ -64,11 +82,12 @@ public class Player : MonoBehaviour {
         float verticalInput = Input.GetAxis("Vertical");
 
         // Based on input variables float values (between -1 and 1), determine which way the player ship should move.
-        if(canSpeedBoost)
+        if (_canSpeedBoost)
         {
             transform.Translate(Vector3.right * Time.deltaTime * (_speed * _speedBoost) * horizontalInput);
             transform.Translate(Vector3.up * Time.deltaTime * (_speed * _speedBoost) * verticalInput);
-        } else
+        }
+        else
         {
             transform.Translate(Vector3.right * Time.deltaTime * _speed * horizontalInput);
             transform.Translate(Vector3.up * Time.deltaTime * _speed * verticalInput);
@@ -98,33 +117,54 @@ public class Player : MonoBehaviour {
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.GetComponent<PowerUp>())
+        if (collision.GetComponent<PowerUp>())
         {
-            PowerUp powerUp = collision.GetComponent<PowerUp>();
-            if (powerUp.getPowerUpId() == 0)
-            {
-                canTripleShot = true;
-                StartCoroutine(TripleShotPowerDownRoutine());
-            }
-            else if (powerUp.getPowerUpId() == 1)
-            {
-                canSpeedBoost = true;
-                StartCoroutine(SpeedBoostPowerDownRoutine());
-            }
-            else if (powerUp.getPowerUpId() == 2)
-            {
-
-            }
-            Destroy(collision.gameObject);
+            ActivatePowerUp(collision);
         }
-        if(collision.GetComponent<EnemyAI>() || collision.GetComponent<EnemyLaser>())
+        if (collision.GetComponent<EnemyAI>() || collision.GetComponent<EnemyLaser>())
         {
-            _playerHealth--;
-            if(_playerHealth < 1)
+            DamagePlayer();
+        }
+    }
+
+    private void DamagePlayer()
+    {
+        if (_isShielded)
+        {
+            _isShielded = false;
+            _shieldsGameObject.SetActive(false);
+        }
+        else
+        {
+            _playerLives--;
+            _uiManager.UpdateLives(_playerLives);
+            if (_playerLives < 1)
             {
+                _gameManager.GameOver();
                 PlayerIsDestroyed();
             }
         }
+    }
+
+    private void ActivatePowerUp(Collider2D collision)
+    {
+        PowerUp powerUp = collision.GetComponent<PowerUp>();
+        if (powerUp.getPowerUpId() == 0)
+        {
+            _canTripleShot = true;
+            StartCoroutine(TripleShotPowerDownRoutine());
+        }
+        else if (powerUp.getPowerUpId() == 1)
+        {
+            _canSpeedBoost = true;
+            StartCoroutine(SpeedBoostPowerDownRoutine());
+        }
+        else if (powerUp.getPowerUpId() == 2)
+        {
+            _isShielded = true;
+            _shieldsGameObject.SetActive(true);
+        }
+        Destroy(collision.gameObject);
     }
 
     private void PlayerIsDestroyed()
@@ -136,12 +176,14 @@ public class Player : MonoBehaviour {
     private IEnumerator TripleShotPowerDownRoutine()
     {
         yield return new WaitForSeconds(5.0f);
-        canTripleShot = false;
+        _canTripleShot = false;
     }
 
     private IEnumerator SpeedBoostPowerDownRoutine()
     {
         yield return new WaitForSeconds(6.0f);
-        canSpeedBoost = false;
+        _canSpeedBoost = false;
     }
+
+ 
 }

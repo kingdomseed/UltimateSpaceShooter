@@ -15,6 +15,16 @@ public class EnemyAI : MonoBehaviour {
     [SerializeField]
     private GameObject _enemyExplosionPrefab;
 
+    private UIManager _uiManager;
+
+    private void Awake()
+    {
+        if (FindObjectOfType<UIManager>())
+        {
+            _uiManager = FindObjectOfType<UIManager>();
+        }
+    }
+
     // Update is called once per frame
     void Update () {
         Movement();
@@ -39,6 +49,7 @@ public class EnemyAI : MonoBehaviour {
     {
         if (collision.GetComponent<Laser>() || collision.GetComponent<Player>())
         {
+            _uiManager.UpdateScore();
             Instantiate(_enemyExplosionPrefab, transform.position, Quaternion.identity);
             Destroy(gameObject);
         }

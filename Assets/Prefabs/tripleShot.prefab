@@ -39,7 +39,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4488945336466518}
   - component: {fileID: 212410331225975842}
-  - component: {fileID: 114899170514834584}
+  - component: {fileID: 114769255855266008}
   m_Layer: 0
   m_Name: tripleShot
   m_TagString: Untagged
@@ -287,6 +287,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 10
+--- !u!114 &114769255855266008
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1165934438740662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4f7730e37ebce6458d6e4bdbbb7d1fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _speed: 10
 --- !u!114 &114772876812926856
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -296,18 +308,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2635da9a058c9b84682e31b88145602e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _speed: 10
---- !u!114 &114899170514834584
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1165934438740662}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e4f7730e37ebce6458d6e4bdbbb7d1fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 10
