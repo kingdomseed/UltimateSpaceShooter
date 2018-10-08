@@ -14,6 +14,10 @@ public class Player : MonoBehaviour
     private GameObject _playerExplosionPrefab;
     [SerializeField]
     private AudioClip _powerUpClip;
+    [SerializeField]
+    private GameObject[] _playerEngineDamage;
+    [SerializeField]
+    private PlayerAnimation _playerAnimation;
 
     private UIManager _uiManager;
     private GameManager _gameManager;
@@ -88,11 +92,35 @@ public class Player : MonoBehaviour
         {
             transform.Translate(Vector3.right * Time.deltaTime * (_speed * _speedBoost) * horizontalInput);
             transform.Translate(Vector3.up * Time.deltaTime * (_speed * _speedBoost) * verticalInput);
+            if (horizontalInput == 0)
+            {
+                _playerAnimation.IsIdle();
+            }
+            else if (horizontalInput < 0)
+            {
+                _playerAnimation.IsMovingLeft();
+            }
+            else
+            {
+                _playerAnimation.IsMovingRight();
+            }
         }
         else
         {
             transform.Translate(Vector3.right * Time.deltaTime * _speed * horizontalInput);
             transform.Translate(Vector3.up * Time.deltaTime * _speed * verticalInput);
+            if (horizontalInput == 0)
+            {
+                _playerAnimation.IsIdle();
+            }
+            else if (horizontalInput < 0)
+            {
+                _playerAnimation.IsMovingLeft();
+            }
+            else
+            {
+                _playerAnimation.IsMovingRight();
+            }
         }
 
         // Setting bounds of level for player's y position
@@ -140,7 +168,16 @@ public class Player : MonoBehaviour
         {
             _playerLives--;
             _uiManager.UpdateLives(_playerLives);
-            if (_playerLives < 1)
+            if (_playerLives == 2)
+            {
+                // Choose one engine failure animation at random and set it to active.
+                _playerEngineDamage[Random.Range(0,2)].SetActive(true);
+            } else if(_playerLives == 1)
+            {
+                // Set both engine failure animations to active.
+                _playerEngineDamage[0].SetActive(true);
+                _playerEngineDamage[1].SetActive(true);
+            } else if (_playerLives < 1)
             {
                 _gameManager.GameOver();
                 PlayerIsDestroyed();
