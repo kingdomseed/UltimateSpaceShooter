@@ -6,8 +6,15 @@ public class EnemyLaser : MonoBehaviour {
 
     [SerializeField]
     private float _speed = 10.0f;
+    [SerializeField]
+    private AudioClip _clip;
 
-	void Update () {
+    private void Start()
+    {
+        AudioSource.PlayClipAtPoint(_clip, Camera.main.transform.position, 1.0f);
+    }
+
+    void Update () {
         // move up at 10 speed
         transform.Translate(Vector3.down * _speed * Time.deltaTime);
 	}

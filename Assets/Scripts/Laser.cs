@@ -6,6 +6,13 @@ public class Laser : MonoBehaviour {
 
     [SerializeField]
     private float _speed = 10.0f;
+    [SerializeField]
+    private AudioClip _clip;
+
+    private void Start()
+    {
+        AudioSource.PlayClipAtPoint(_clip, Camera.main.transform.position, 1.0f);
+    }
 
     void Update()
     {

@@ -145,7 +145,7 @@ MonoBehaviour:
   _shieldsGameObject: {fileID: 1991197513827702}
   _playerExplosionPrefab: {fileID: 1659492252722016, guid: b1ca1a167ab39724d9650bb1f4ddd96f,
     type: 2}
-  _uiManager: {fileID: 0}
+  _powerUpClip: {fileID: 8300000, guid: 5ee343246919d2b4bba63ae629e95494, type: 3}
   _canTripleShot: 0
   _canSpeedBoost: 0
   _isShielded: 0

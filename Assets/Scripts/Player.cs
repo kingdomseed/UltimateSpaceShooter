@@ -12,6 +12,8 @@ public class Player : MonoBehaviour
     private GameObject _shieldsGameObject;
     [SerializeField]
     private GameObject _playerExplosionPrefab;
+    [SerializeField]
+    private AudioClip _powerUpClip;
 
     private UIManager _uiManager;
     private GameManager _gameManager;
@@ -149,6 +151,7 @@ public class Player : MonoBehaviour
     private void ActivatePowerUp(Collider2D collision)
     {
         PowerUp powerUp = collision.GetComponent<PowerUp>();
+        AudioSource.PlayClipAtPoint(_powerUpClip, Camera.main.transform.position, 1.0f);
         if (powerUp.getPowerUpId() == 0)
         {
             _canTripleShot = true;
